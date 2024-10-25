@@ -1,0 +1,89 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: self-hosted
+
+    services:
+      postgres:
+        image: postgres:latest
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: worktime_manager_prod
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install PostgreSQL Client
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y postgresql-client make build-essential
+
+      - name: Set up Elixir
+        uses: erlef/setup-beam@v1
+        with:
+          elixir-version: '1.17.3'
+          otp-version: '25.0'
+
+      - name: Install dependencies
+        run: |
+          cd "./time_manager" 
+          mix deps.get
+
+      - name: Wait for PostgreSQL to be ready
+        run: |
+          until PGPASSWORD=postgres psql -h localhost -U postgres -c '\q'; do
+            echo "Waiting for PostgreSQL to be ready..."
+            sleep 5
+          done
+          echo "PostgreSQL is ready."
+
+      - name: Create Database
+        run: |
+          cd "./time_manager"
+          mix ecto.create
+
+      - name: Run database migrations
+        run: cd "./time_manager" && mix ecto.migrate
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build and push backend image
+        uses: docker/build-push-action@v2
+        with:
+          context: ./time_manager
+          push: true
+          tags: amindev75/timemanagerbackend:latest
+
+      - name: Build and push frontend image
+        uses: docker/build-push-action@v2
+        with:
+          context: ./time_manager_front
+          push: true
+          tags: amindev75/timemanagerfrontend:latest
+
+      - name: Deploy to AWS (or your hosting service)
+        run: |
+          ssh -i keyy.pem ubuntu@54.226.193.229 << 'EOF'
+            docker pull amindev75/timemanagerbackend:latest
+            docker pull amindev75/timemanagerfrontend:latest
+            docker-compose up -d
+          EOF

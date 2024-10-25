@@ -1,0 +1,14 @@
+{
+  "appId": "com.TimeManager.app",
+  "appName": "TimeManager",
+  "webDir": "dist",
+  "server": {
+    "androidScheme": "https",
+    "cleartext": true,
+    "allowNavigation": ["*"],
+    "hostname": "localhost"
+  },
+  "ios": {
+    "contentInset": "always"
+  }
+}

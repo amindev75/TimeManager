@@ -1,0 +1,6 @@
+le user se connecte avec ses crédences et est redirigé vers sa page.
+
+Sur cette page il voit ses stats dans 3 graphs différents.
+Il peut afficher dans un tableau l'ensemble de ses workingtimes.
+Il peut se déconnecter.
+Contour de l'écran rouge ou vert si il est in ou out.
