@@ -34,7 +34,6 @@ RUN apt-get update -y && apt-get install -y libstdc++6 openssl libncurses5 local
     build-essential make \
     && apt-get clean && rm -f /var/lib/apt/lists/*_*
 
-# Vérifier que 'make' est bien installé dans cette phase également
 RUN which make
 
 RUN sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen && locale-gen
