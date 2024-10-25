@@ -46,7 +46,7 @@ jobs:
           key: ${{ secrets.SSH_KEY_PEM }}
           script: |
             cd TimeManager
-            git pull origin main
+            git pull main
             docker-compose down
             docker-compose pull
             docker-compose up -d
