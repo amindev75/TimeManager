@@ -30,7 +30,7 @@ services:
       context: ./time_manager_front
       dockerfile: Dockerfile
     ports:
-      - "8080:80"
+      - "8080:8080"
     volumes:
       - ./time_manager_front:/app
     command: ["/bin/sh", "-c", "nginx -g 'daemon off;'"]
