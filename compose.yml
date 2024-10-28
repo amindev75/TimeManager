@@ -1,8 +1,9 @@
 services:
   phoenix-app:
-    build:
-      context: ./time_manager
-      dockerfile: Dockerfile
+    image: amindev75/timemanagerbackend
+    # build:
+    #   context: ./time_manager
+    #   dockerfile: Dockerfile
     environment:
       DATABASE_URL: "ecto://postgres:postgres@db:5432/worktime_manager_prod"
       SECRET_KEY_BASE: "4y4rFb+M2nsYEoHTLc2/0AszTGENdhF86wPttbA0PLqqlyxmzX4yjvDNRuKB98vt"
@@ -26,9 +27,10 @@ services:
       - pgdata:/var/lib/postgresql/data
 
   vuejs-app:
-    build:
-      context: ./time_manager_front
-      dockerfile: Dockerfile
+    image : amindev75/timemanagerfrontend
+    # build:
+    #   context: ./time_manager_front
+    #   dockerfile: Dockerfile
     ports:
       - "8080:80"
     volumes:
