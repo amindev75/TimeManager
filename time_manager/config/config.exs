@@ -17,7 +17,7 @@ config :time_manager_api,
 
 # Configures the endpoint
 config :time_manager_api, TimeManagerWeb.Endpoint,
-  url: [host: "localhost"],
+  url: [host: "54.160.227.203:8080"],
   adapter: Bandit.PhoenixAdapter,
   render_errors: [
     formats: [json: TimeManagerWeb.ErrorJSON],
