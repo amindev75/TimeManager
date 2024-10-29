@@ -31,7 +31,7 @@ RUN ls -la /app/_build/prod/rel/
 
 FROM hexpm/elixir:1.14.5-erlang-25.3.2.4-debian-bullseye-20230612-slim
 
-# Installer make et d'autres dépendances nécessaires
+
 RUN apt-get update -y && apt-get install -y libstdc++6 openssl libncurses5 locales ca-certificates postgresql-client \
     build-essential make \
     && apt-get clean && rm -f /var/lib/apt/lists/*_*
