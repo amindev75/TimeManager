@@ -28,7 +28,7 @@ RUN mix release
 
 RUN ls -la /app/_build/prod/rel/
 
-# Phase 2: Runner
+
 FROM hexpm/elixir:1.14.5-erlang-25.3.2.4-debian-bullseye-20230612-slim
 
 # Installer make et d'autres dépendances nécessaires
